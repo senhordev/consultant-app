@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API;
+
+namespace API.Business
+{
+    public class PadraoCadastro : ICadastro
+    {
+        public uint Id { get; set; }
+        public uint IdUsuario { get; set; }
+    }
+
+    public class PadraoBusiness : IBusiness
+    {
+        MyDbContext db;
+        
+        public Padrao () => db = new MyDbContext();
+        public Padrao (MyDbContext c) => db = c; 
+
+        public List<ICadastro> Buscar()
+        {
+
+        }
+
+        public ICadastro Buscar(uint Id)
+        {
+
+        }
+
+        public void Cadastrar(ICadastro c)
+        {
+
+        }
+
+        public void Alterar(ICadastro c)
+        {
+
+        }
+        public bool Deletar (uint id)
+        {
+            
+        }
+    }
+
+}
