@@ -6,6 +6,16 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="7.4.0" />
+    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Consultant.Domain.Core\Consultant.Domain.Core.csproj" />
   </ItemGroup>
 
 </Project>

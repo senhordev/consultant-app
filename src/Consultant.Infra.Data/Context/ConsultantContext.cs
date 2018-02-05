@@ -1,39 +1,38 @@
-﻿using System;
+﻿using Consultant.Domain.Models;
+using Consultant.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
-namespace ConsulTeam.WebApi
+namespace Consultant.Infra.Data.Context
 {
-    public partial class MyDbContext : DbContext
+    public class ConsultantContext : DbContext
     {
-        public virtual DbSet<Apontamentos> Apontamentos { get; set; }
-        public virtual DbSet<Apontamentosfatura> Apontamentosfatura { get; set; }
-        public virtual DbSet<Atividades> Atividades { get; set; }
-        public virtual DbSet<Avaliacao> Avaliacao { get; set; }
-        public virtual DbSet<Clientes> Clientes { get; set; }
-        public virtual DbSet<Clientesusuarios> Clientesusuarios { get; set; }
-        public virtual DbSet<Consultores> Consultores { get; set; }
-        public virtual DbSet<Consultoreshabilidades> Consultoreshabilidades { get; set; }
-        public virtual DbSet<Consultoresusuarios> Consultoresusuarios { get; set; }
-        public virtual DbSet<Faturas> Faturas { get; set; }
-        public virtual DbSet<Gerentes> Gerentes { get; set; }
-        public virtual DbSet<Gerentesusuarios> Gerentesusuarios { get; set; }
-        public virtual DbSet<Habilidades> Habilidades { get; set; }
-        public virtual DbSet<Precos> Precos { get; set; }
-        public virtual DbSet<Projetos> Projetos { get; set; }
-        public virtual DbSet<Usuarios> Usuarios { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("Server=localhost;User Id=root;Password=root;Database=consultteam");
-            }
-        }
+        public DbSet<Teste> Testes { get; set; }
+        public DbSet<Apontamentos> Apontamentos { get; set; }
+        public DbSet<Apontamentosfatura> Apontamentosfatura { get; set; }
+        public DbSet<Atividades> Atividades { get; set; }
+        public DbSet<Avaliacao> Avaliacao { get; set; }
+        public DbSet<Clientes> Clientes { get; set; }
+        public DbSet<Clientesusuarios> Clientesusuarios { get; set; }
+        public DbSet<Consultores> Consultores { get; set; }
+        public DbSet<Consultoreshabilidades> Consultoreshabilidades { get; set; }
+        public DbSet<Consultoresusuarios> Consultoresusuarios { get; set; }
+        public DbSet<Faturas> Faturas { get; set; }
+        public DbSet<Gerentes> Gerentes { get; set; }
+        public DbSet<Gerentesusuarios> Gerentesusuarios { get; set; }
+        public DbSet<Habilidades> Habilidades { get; set; }
+        public DbSet<Precos> Precos { get; set; }
+        public DbSet<Projetos> Projetos { get; set; }
+        public DbSet<Usuarios> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new TesteMap());
+
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Apontamentos>(entity =>
             {
                 entity.HasKey(e => e.IdApontamento);
@@ -576,6 +575,18 @@ namespace ConsulTeam.WebApi
                     .HasColumnName("desUsuario")
                     .HasMaxLength(100);
             });
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // get the configuration from the app settings
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            // define the database to use
+            optionsBuilder.UseMySql(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

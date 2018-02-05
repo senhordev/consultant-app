@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace API
+namespace Consultant.Domain.Models
 {
     public partial class Faturas
     {
